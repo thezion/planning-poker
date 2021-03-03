@@ -1,0 +1,26 @@
+name: Deploy To Github Page
+
+on:
+  workflow_dispatch:
+  push:
+    tags: v*
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@master
+        with:
+          node-version: '12'
+      - run: npm install
+      - run: npm run build
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.CICD_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          cname: planning-poker.appsample.com
