@@ -1,0 +1,11 @@
+.__header {
+    z-index: 1000;
+    &__logo {
+        height: 1.5em;
+    }
+
+    &__profile {
+        height: 1.25em;
+        vertical-align: text-bottom;
+    }
+}

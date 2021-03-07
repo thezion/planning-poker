@@ -1,0 +1,21 @@
+.__cards {
+    position: relative;
+    z-index: 100;
+    &__card {
+        height: 120px;
+        padding: 0 2px;
+        cursor: pointer !important;
+        img {
+            top: 30px;
+            transition: all ease 0.2s;
+        }
+        &:hover img {
+            top: 0px;
+        }
+        &--active img {
+            top: 0px;
+            box-shadow: #fff 0px 0px 8px;
+            border-radius: 6px;
+        }
+    }
+}

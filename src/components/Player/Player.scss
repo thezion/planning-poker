@@ -1,0 +1,28 @@
+.__player {
+    max-width: 130px;
+    height: 125px;
+    &__container {
+        width: 66px;
+        height: 98px;
+        padding: 2px 1px;
+        border: 2px dashed rgba(255, 255, 255, 0.35);
+        border-radius: 6px;
+        &__warpper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            img {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        }
+    }
+    &__name {
+        margin-top: 9px;
+        height: 16px;
+        line-height: 16px;
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.7);
+    }
+}
