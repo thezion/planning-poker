@@ -1,5 +1,6 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
+import { useSelector } from 'react-redux';
 import db from '../../libraries/database';
 import { ucfirst } from '../../libraries/stringHelper';
 import './Player.scss';
@@ -14,6 +15,7 @@ function Player({ name, player, showPoints }) {
         cardStatus = 'back';
     }
 
+    const user = useSelector((state) => state.user);
     const cheated = showPoints && player.cheated && player.connected;
 
     return (
@@ -53,10 +55,10 @@ function Player({ name, player, showPoints }) {
                     >
                         <img src={`img/${player.point}.png`} />
                     </CSSTransition>
-                    {cheated && <img src="img/cheat.gif" width="62" />}
+                    {user.trackCheating && cheated && <img src="img/cheat.gif" width="62" />}
                 </div>
             </div>
-            <div className="__player__name">{ucfirst(name)}</div>
+            <div className={`${user.userName === name ? 'text-warning' : ''} __player__name`}>{ucfirst(name)}</div>
         </div>
     );
 }

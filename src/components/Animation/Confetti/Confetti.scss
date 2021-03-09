@@ -50,9 +50,9 @@ $duration: 1000;
         &:nth-child(odd) {
             background: $c-blue;
         }
-        &:nth-child(even) {
-            // z-index: 1;
-        }
+        // &:nth-child(even) {
+        //     z-index: 1;
+        // }
         &:nth-child(4n) {
             width: 5px;
             height: 12px;

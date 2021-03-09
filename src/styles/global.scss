@@ -5,6 +5,11 @@ body,
     height: 100%;
 }
 
+label,
+input[type='checkbox'] {
+    cursor: pointer;
+}
+
 .card-enter {
     opacity: 0;
     transform: rotateY(90deg);
@@ -20,4 +25,13 @@ body,
 .card-exit-active {
     transform: rotateY(90deg);
     transition: all 0.3s ease;
+}
+
+.table-striped > tbody > tr {
+    &:nth-of-type(odd) {
+        color: $gray-300;
+    }
+    &:nth-of-type(even) {
+        color: $gray-400;
+    }
 }

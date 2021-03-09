@@ -23,7 +23,7 @@ export function isConsistent(players) {
         validPlayerArr.length >= 2 &&
         validPlayerArr[0].point > 0 &&
         validPlayerArr.every((player) => {
-            return player.point == validPlayerArr[0].point;
+            return player.point === validPlayerArr[0].point;
         });
     return consistent;
 }

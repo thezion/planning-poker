@@ -30,18 +30,15 @@ class FirebaseClient {
     }
 
     setPoint(point, cheated = false) {
-        // save the vote
+        const data = {
+            '/point': point,
+            '/connected': true,
+            '/cheated': cheated,
+        };
         this.db
-            .ref(this.sessionName + '/players/' + this.userName + '/point')
-            .set(point)
+            .ref(this.sessionName + '/players/' + this.userName)
+            .update(data)
             .catch(this.errorHandler);
-        // save cheated
-        if (cheated) {
-            this.db
-                .ref(this.sessionName + '/players/' + this.userName + '/cheated')
-                .set(true)
-                .catch(this.errorHandler);
-        }
     }
 
     clearVotes() {

@@ -2,21 +2,25 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSessionName, setData, setConfetti } from '../../store/session';
+import { setTrackCheating } from '../../store/user';
 import { ucfirst, trimName } from '../../libraries/stringHelper';
 import { allPlayersVoted, getUserPoint, isConsistent } from '../../libraries/playerHelper';
 import db from '../../libraries/database';
 import Table from '../Table/Table';
 import Cards from '../Cards/Cards';
+import Analytic from '../Analytic/Analytic';
 import './Room.scss';
 
 function Room({ match }) {
     const [showPoints, setShowPoints] = useState(false);
     const [userPoint, setUserPoint] = useState(null);
+    const [analytics, setAnalytics] = useState(false);
     const dispatch = useDispatch();
     const history = useHistory();
     const sessionName = trimName(match.params.sessionName);
     const sessionData = useSelector((state) => state.session.data);
     const userName = useSelector((state) => state.user.userName);
+    const trackCheating = useSelector((state) => state.user.trackCheating);
 
     useEffect(() => {
         if (sessionName && userName) {
@@ -76,6 +80,43 @@ function Room({ match }) {
                     </button>
                 </div>
             </div>
+
+            <div className="mt-5 text-secondary text-center">
+                <h4>- Setting -</h4>
+                <div className="d-flex justify-content-center">
+                    <div className="form-check form-switch mx-2">
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="checkboxAnalytics"
+                            checked={analytics}
+                            onChange={(event) => setAnalytics(event.target.checked)}
+                        />
+                        <label className="form-check-label" htmlFor="checkboxAnalytics">
+                            Show analytics
+                        </label>
+                    </div>
+                    <div className="form-check form-switch mx-2">
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="checkboxCheating"
+                            checked={trackCheating}
+                            onChange={(event) => dispatch(setTrackCheating(event.target.checked))}
+                        />
+                        <label className="form-check-label" htmlFor="checkboxCheating">
+                            Track cheating
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            {analytics && (
+                <div className="mt-5 text-secondary ">
+                    <h4 className="text-center">- Analytics -</h4>
+                    <Analytic sessionName={sessionName} />
+                </div>
+            )}
         </div>
     );
 }
