@@ -98,7 +98,7 @@ function Room({ match, location }) {
             )}
 
             <div className="mt-5 text-secondary text-center">
-                <h4 className="--with-dash">Setting</h4>
+                <h4 className="--with-dash">Setting &amp; Help</h4>
                 <div className="d-flex justify-content-center">
                     <div className="form-check form-switch mx-2">
                         <input
@@ -123,6 +123,9 @@ function Room({ match, location }) {
                         <label className="form-check-label" htmlFor="checkboxCheating">
                             Track cheating
                         </label>
+                    </div>
+                    <div>
+                        <span className="ms-2 me-3">|</span>To remove a player, right click the name
                     </div>
                 </div>
             </div>

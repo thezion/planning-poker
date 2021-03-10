@@ -85,7 +85,7 @@ function Analytic({ sessionName }) {
             <table className="table table-dark table-striped text-center">
                 <thead>
                     <tr className="text-light">
-                        <th scope="col">Datetime</th>
+                        <th scope="col">Date &amp; Time</th>
                         <th scope="col">Votes @{sessionName}</th>
                         <th scope="col">Standard Deviation</th>
                     </tr>

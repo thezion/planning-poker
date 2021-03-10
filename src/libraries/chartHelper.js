@@ -14,7 +14,7 @@ export function createChartData(array, xOptions, yOptions) {
                         : item[yOptions.key];
                 }),
                 fill: false,
-                backgroundColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.8)',
                 borderColor: 'rgba(255, 99, 132, 0.2)',
             },
         ],

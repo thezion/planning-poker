@@ -5,9 +5,15 @@ body,
     height: 100%;
 }
 
-label,
 input[type='checkbox'] {
     cursor: pointer;
+}
+
+label {
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .card-enter {
