@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/database';
+import reporter from './reporter';
 
 class FirebaseClient {
     constructor(config) {
@@ -7,7 +8,7 @@ class FirebaseClient {
         this.db = firebase.database();
         this.sessionName = '';
         this.userName = '';
-        console.info('new FirebaseClient()');
+        reporter.log('new FirebaseClient()');
     }
 
     signIn(sessionName, userName) {

@@ -6,4 +6,4 @@ const response = handler({
     },
 });
 
-response.then((res) => console.log(res)).catch((err) => console.error(res));
+response.then((res) => console.log(res)).catch((err) => console.error(err));
