@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSessionName, setData, setConfetti } from '../../store/session';
@@ -8,22 +8,28 @@ import { allPlayersVoted, getUserPoint, isConsistent } from '../../libraries/pla
 import db from '../../libraries/database';
 import Table from '../Table/Table';
 import Cards from '../Cards/Cards';
-import Analytic from '../Analytic/Analytic';
+import Loading from '../Utilities/Loading';
 import './Room.scss';
 
-function Room({ match }) {
+const Analytic = React.lazy(() => import('../Analytic/Analytic'));
+
+function Room({ match, location }) {
+    const dispatch = useDispatch();
+    const history = useHistory();
+    // parse url
+    const sessionName = trimName(match.params.sessionName);
+    const observer = location.search.indexOf('?observer') === 0;
+    // state
     const [showPoints, setShowPoints] = useState(false);
     const [userPoint, setUserPoint] = useState(null);
     const [analytics, setAnalytics] = useState(false);
-    const dispatch = useDispatch();
-    const history = useHistory();
-    const sessionName = trimName(match.params.sessionName);
+    // store
     const sessionData = useSelector((state) => state.session.data);
-    const userName = useSelector((state) => state.user.userName);
+    const userName = useSelector((state) => (observer ? '' : state.user.userName));
     const trackCheating = useSelector((state) => state.user.trackCheating);
 
     useEffect(() => {
-        if (sessionName && userName) {
+        if (sessionName && (userName || observer)) {
             dispatch(setSessionName(sessionName));
             // sign in
             db.signIn(sessionName, userName);
@@ -49,7 +55,7 @@ function Room({ match }) {
         } else {
             history.push('/');
         }
-    }, [dispatch, history, sessionName, userName]);
+    }, [dispatch, history, sessionName, userName, observer]);
 
     return (
         <div className="__room" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/img/poker-desk.jpg)` }}>
@@ -62,27 +68,37 @@ function Room({ match }) {
                     </select>
                 </div>
             </div>
+
             <div className="mx-auto __room__table">
                 <Table players={sessionData.players || {}} showPoints={showPoints} />
             </div>
-            <div className="row justify-content-between">
-                <div className="col-2">
-                    <button className="btn btn-secondary w-100" onClick={() => db.clearVotes()}>
-                        Clear Votes
-                    </button>
+
+            {!observer && (
+                <div className="row">
+                    <div className="col-2">
+                        <button className="btn btn-secondary w-100" onClick={() => db.clearVotes()}>
+                            Clear Votes
+                        </button>
+                    </div>
+                    <div className="col-8">
+                        <Cards userPoint={userPoint} showPoints={showPoints} />
+                    </div>
+                    <div className="col-2">
+                        <button className="btn btn-secondary w-100" onClick={() => db.showVotes()}>
+                            Show Votes
+                        </button>
+                    </div>
                 </div>
-                <div className="col-8">
-                    <Cards userPoint={userPoint} showPoints={showPoints} />
+            )}
+
+            {observer && (
+                <div className="mt-4 pt-5">
+                    <h4 className="text-center text-light --with-dash">You are an observer of this session</h4>
                 </div>
-                <div className="col-2">
-                    <button className="btn btn-secondary w-100" onClick={() => db.showVotes()}>
-                        Show Votes
-                    </button>
-                </div>
-            </div>
+            )}
 
             <div className="mt-5 text-secondary text-center">
-                <h4>- Setting -</h4>
+                <h4 className="--with-dash">Setting</h4>
                 <div className="d-flex justify-content-center">
                     <div className="form-check form-switch mx-2">
                         <input
@@ -112,10 +128,12 @@ function Room({ match }) {
             </div>
 
             {analytics && (
-                <div className="mt-5 text-secondary ">
-                    <h4 className="text-center">- Analytics -</h4>
-                    <Analytic sessionName={sessionName} />
-                </div>
+                <Suspense fallback={<Loading />}>
+                    <div className="mt-5 text-secondary ">
+                        <h4 className="text-center --with-dash">Analytics</h4>
+                        <Analytic sessionName={sessionName} />
+                    </div>
+                </Suspense>
             )}
         </div>
     );

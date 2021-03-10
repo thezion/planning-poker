@@ -13,7 +13,7 @@ class FirebaseClient {
 
     signIn(sessionName, userName) {
         console.info('DB connected');
-        this.db.goOnline();
+        this.online();
         this.sessionName = sessionName;
         this.userName = userName;
         if (this.userName) {
@@ -91,6 +91,10 @@ class FirebaseClient {
         this.db.ref(this.sessionName).off();
         this.db.ref('.info/connected').off();
         console.info('Detach listener: ' + this.sessionName);
+    }
+
+    online() {
+        this.db.goOnline();
     }
 
     offline() {

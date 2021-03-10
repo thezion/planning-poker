@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import db from '../../libraries/database';
 import './Cards.scss';
 
@@ -20,5 +21,10 @@ function Cards({ userPoint, showPoints }) {
 
     return <div className="d-flex justify-content-center __cards">{pokers}</div>;
 }
+
+Cards.propTypes = {
+    userPoint: PropTypes.number,
+    showPoints: PropTypes.bool,
+};
 
 export default React.memo(Cards);

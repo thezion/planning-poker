@@ -1,4 +1,5 @@
 import Player from '../Player/Player';
+import PropTypes from 'prop-types';
 import './Table.scss';
 
 function Table({ players, showPoints }) {
@@ -21,5 +22,10 @@ function Table({ players, showPoints }) {
         </div>
     );
 }
+
+Table.propTypes = {
+    players: PropTypes.object,
+    showPoints: PropTypes.bool,
+};
 
 export default Table;

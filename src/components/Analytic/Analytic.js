@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Line } from 'react-chartjs-2';
 import { getStandardDeviation, getMean } from '../../libraries/mathHelper';
 import reporter from '../../libraries/reporter';
@@ -62,7 +63,7 @@ function Analytic({ sessionName }) {
     return (
         <div>
             <div className="text-center mb-3">
-                <div>Mean Standard Deviation: reflects the team's consensus - the lower, the better</div>
+                <div>Mean Standard Deviation: reflects the team's disagreement - the lower, the better</div>
                 <div>
                     Last 20 Votes
                     <span
@@ -94,5 +95,9 @@ function Analytic({ sessionName }) {
         </div>
     );
 }
+
+Analytic.propTypes = {
+    sessionName: PropTypes.string,
+};
 
 export default React.memo(Analytic);

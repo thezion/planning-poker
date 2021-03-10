@@ -52,6 +52,7 @@ function SignIn() {
                         required
                         id="user_name"
                         name="user_name"
+                        placeholder="Please pick a unique nickname..."
                         value={userName}
                         onChange={(event) => updateUserName(trimName(event.target.value))}
                     />

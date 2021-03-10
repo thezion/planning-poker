@@ -35,3 +35,12 @@ input[type='checkbox'] {
         color: $gray-400;
     }
 }
+
+.--with-dash {
+    &::after {
+        content: ' -';
+    }
+    &::before {
+        content: '- ';
+    }
+}

@@ -7,9 +7,8 @@ export function getMean(numArrOrObjArr, fieldName = null) {
 }
 
 export function getStandardDeviation(array) {
-    const n = array.length;
     const mean = getMean(array);
-    const sd = Math.sqrt(array.map((x) => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n);
+    const sd = Math.sqrt(array.map((x) => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / array.length);
     return getRound(sd, 2);
 }
 

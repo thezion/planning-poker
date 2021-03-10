@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 import { useSelector } from 'react-redux';
 import db from '../../libraries/database';
@@ -75,5 +76,11 @@ function removePlayer(playerName) {
 function areEqual(prevProps, nextProps) {
     return JSON.stringify(prevProps) === JSON.stringify(nextProps);
 }
+
+Player.propTypes = {
+    name: PropTypes.string,
+    player: PropTypes.object,
+    showPoints: PropTypes.bool,
+};
 
 export default React.memo(Player, areEqual);
