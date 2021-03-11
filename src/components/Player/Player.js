@@ -59,7 +59,9 @@ function Player({ name, player, showPoints }) {
                     >
                         <img src={`img/${player.point}.png`} />
                     </CSSTransition>
-                    {user.trackCheating && cheated && <img src="img/cheat.gif" width="62" />}
+                    {user.trackCheating && cheated && (
+                        <img src="img/cheat.gif" width="62" title="Vote has been changed. It's magic!" />
+                    )}
                 </div>
             </div>
             <div className={`${user.userName === name ? 'text-warning' : ''} __player__name`}>{ucfirst(name)}</div>

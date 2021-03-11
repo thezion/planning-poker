@@ -63,7 +63,7 @@ function Analytic({ sessionName }) {
     return (
         <div>
             <div className="text-center mb-3">
-                <div>Mean Standard Deviation: reflects the team's disagreement - the lower, the better</div>
+                <div>Average Standard Deviation: reflects the team's disagreement - the lower, the better</div>
                 <div>
                     Last 20 Votes
                     <span

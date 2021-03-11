@@ -11,7 +11,7 @@ class FirebaseClient {
         reporter.log('new FirebaseClient()');
     }
 
-    signIn(sessionName, userName) {
+    initialize(sessionName, userName) {
         console.info('DB connected');
         this.online();
         this.sessionName = sessionName;

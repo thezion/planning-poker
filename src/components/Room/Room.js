@@ -4,8 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setSessionName, setData, setConfetti } from '../../store/session';
 import { setTrackCheating } from '../../store/user';
 import { ucfirst, trimName } from '../../libraries/stringHelper';
+import { getAvgPoint } from '../../libraries/mathHelper';
 import { allPlayersVoted, getUserPoint, isConsistent } from '../../libraries/playerHelper';
 import db from '../../libraries/database';
+import reporter from '../../libraries/reporter';
 import Table from '../Table/Table';
 import Cards from '../Cards/Cards';
 import Loading from '../Utilities/Loading';
@@ -29,13 +31,14 @@ function Room({ match, location }) {
     const trackCheating = useSelector((state) => state.user.trackCheating);
 
     useEffect(() => {
-        if (sessionName && (userName || observer)) {
+        if (sessionName) {
             dispatch(setSessionName(sessionName));
-            // sign in
-            db.signIn(sessionName, userName);
+        }
+        if (sessionName && (userName || observer)) {
+            db.initialize(sessionName, userName);
             // listener
             db.attachListener((snapshot) => {
-                console.log('Session data updated');
+                reporter.log('Session data updated');
                 const data = snapshot.val();
                 dispatch(setData(data));
                 // points
@@ -85,7 +88,7 @@ function Room({ match, location }) {
                     </div>
                     <div className="col-2">
                         <button className="btn btn-secondary w-100" onClick={() => db.showVotes()}>
-                            Show Votes
+                            {showPoints ? 'Avg = ' + getAvgPoint(sessionData.players || {}) + ' pt' : 'Show Votes'}
                         </button>
                     </div>
                 </div>
