@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Line } from 'react-chartjs-2';
-import { getStandardDeviation, getMean } from '../../libraries/mathHelper';
-import reporter from '../../libraries/reporter';
-import { createChartData } from '../../libraries/chartHelper';
+
+import { getStandardDeviation, getMean } from 'libraries/mathHelper';
+import reporter from 'libraries/reporter';
+import { createChartData } from 'libraries/chartHelper';
 
 const chartOptions = {
     scales: {

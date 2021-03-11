@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { trimName } from '../libraries/stringHelper';
+
+import { trimName } from 'libraries/stringHelper';
 
 const KEY_USER_NAME = 'myName';
 const KEY_SETTING_TRACK_CHEATING = 'trackCheating';

@@ -1,5 +1,6 @@
-import Player from '../Player/Player';
 import PropTypes from 'prop-types';
+
+import Player from 'components/Player/Player';
 import './Table.scss';
 
 function Table({ players, showPoints }) {

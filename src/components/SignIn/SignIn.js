@@ -1,9 +1,10 @@
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { setUserName } from '../../store/user';
-import { trimName } from '../../libraries/stringHelper';
-// import style from './Header.module.scss';
+
+import { setUserName } from 'store/user';
+import { trimName } from 'libraries/stringHelper';
 
 function SignIn() {
     const dispatch = useDispatch();
@@ -62,9 +63,9 @@ function SignIn() {
                         Join Session
                     </button>
                     <span className="me-2 ms-3">OR</span>
-                    <a className="text-primary" href={`#/${sessionName}?observer`}>
+                    <Link to={`/${sessionName}?observer`} className="text-primary">
                         Join As Observer
-                    </a>
+                    </Link>
                 </div>
             </form>
         </div>

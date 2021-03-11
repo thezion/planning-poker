@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { ucfirst } from '../../libraries/stringHelper';
+
+import { ucfirst } from 'libraries/stringHelper';
 import './Header.scss';
 
 function Header() {
@@ -8,14 +10,14 @@ function Header() {
     return (
         <nav className="navbar navbar-dark bg-dark __header">
             <div className="container-fluid">
-                <a className="navbar-brand" href="#/" title="Back To Sign In Page">
+                <Link className="navbar-brand" to="/" title="Back To Sign In Page">
                     <img
                         src="img/favicon-192x192.png"
                         alt="logo"
                         className="d-inline-block align-top me-2 __header__logo"
                     />
                     Planning Poker
-                </a>
+                </Link>
                 <div className="navbar-text">
                     <img className="__header__profile" alt="profile" src="img/profile.svg" />
                     <span className="ms-1">{ucfirst(userName) || 'Guest'}</span>

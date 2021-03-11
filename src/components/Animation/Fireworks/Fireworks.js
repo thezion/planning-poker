@@ -1,4 +1,4 @@
-import WithToggle from '../../../hoc/WithToggle';
+import WithToggle from 'hoc/WithToggle';
 import './Fireworks.scss';
 
 function Fireworks() {

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import db from '../../libraries/database';
+
+import db from 'libraries/database';
 import './Cards.scss';
 
 const points = [0.5, 1, 2, 3, 5, 8, 13, -1];

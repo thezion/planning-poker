@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 import { useSelector } from 'react-redux';
-import db from '../../libraries/database';
-import { ucfirst } from '../../libraries/stringHelper';
-import reporter from '../../libraries/reporter';
+
+import db from 'libraries/database';
+import { ucfirst } from 'libraries/stringHelper';
+import reporter from 'libraries/reporter';
 import './Player.scss';
 
 function Player({ name, player, showPoints }) {

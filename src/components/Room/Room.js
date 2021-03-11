@@ -1,16 +1,17 @@
 import React, { Suspense, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSessionName, setData, setConfetti } from '../../store/session';
-import { setTrackCheating } from '../../store/user';
-import { ucfirst, trimName } from '../../libraries/stringHelper';
-import { getAvgPoint } from '../../libraries/mathHelper';
-import { allPlayersVoted, getUserPoint, isConsistent } from '../../libraries/playerHelper';
-import db from '../../libraries/database';
-import reporter from '../../libraries/reporter';
-import Table from '../Table/Table';
-import Cards from '../Cards/Cards';
-import Loading from '../Utilities/Loading';
+
+import { setSessionName, setData, setConfetti } from 'store/session';
+import { setTrackCheating } from 'store/user';
+import { ucfirst, trimName } from 'libraries/stringHelper';
+import { getAvgPoint } from 'libraries/mathHelper';
+import { allPlayersVoted, getUserPoint, isConsistent } from 'libraries/playerHelper';
+import db from 'libraries/database';
+import reporter from 'libraries/reporter';
+import Table from 'components/Table/Table';
+import Cards from 'components/Cards/Cards';
+import Loading from 'components/Utilities/Loading';
 import './Room.scss';
 
 const Analytic = React.lazy(() => import('../Analytic/Analytic'));

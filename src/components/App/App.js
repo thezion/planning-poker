@@ -1,9 +1,10 @@
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
-import Header from '../Header/Header';
-import SignIn from '../SignIn/SignIn';
-import Room from '../Room/Room';
-import Confetti from '../Animation/Confetti/Confetti';
-// import Confetti from '../Animation/Fireworks/Fireworks';
+
+import Header from 'components/Header/Header';
+import SignIn from 'components/SignIn/SignIn';
+import Room from 'components/Room/Room';
+import Confetti from 'components/Animation/Confetti/Confetti';
+// import Confetti from 'components/Animation/Fireworks/Fireworks';
 import './App.scss';
 
 function App() {
