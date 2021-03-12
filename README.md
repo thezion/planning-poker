@@ -2,6 +2,13 @@
 
 A simple game for estimating the relative size of tasks.
 
+## Versions
+
+There are two versions of this app:
+
+- Vue2 + Typescript : please check out branch `vue`. This version has been _deprecated_.
+- React17 + Redux : please check out branch `react`. Active version.
+
 ## Play Online
 
 [https://planning-poker.appsample.com](https://planning-poker.appsample.com)
