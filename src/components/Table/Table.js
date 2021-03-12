@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 
 import Player from 'components/Player/Player';
+import Loading from 'components/Utilities/Loading';
 import './Table.scss';
 
-function Table({ players, showPoints }) {
+function Table({ players, showVotes }) {
     const PlayerElems = Object.keys(players).map((playerName) => {
-        return <Player key={playerName} name={playerName} player={players[playerName]} showPoints={showPoints} />;
+        return <Player key={playerName} name={playerName} player={players[playerName]} showVotes={showVotes} />;
     });
 
     let tableSize = 'sm';
@@ -19,14 +20,14 @@ function Table({ players, showPoints }) {
         <div
             className={`w-100 h-100 d-flex flex-wrap justify-content-around align-items-center mx-auto __table--${tableSize}`}
         >
-            {PlayerElems}
+            {PlayerElems.length ? PlayerElems : <Loading />}
         </div>
     );
 }
 
 Table.propTypes = {
     players: PropTypes.object,
-    showPoints: PropTypes.bool,
+    showVotes: PropTypes.bool,
 };
 
 export default Table;

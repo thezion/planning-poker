@@ -6,13 +6,13 @@ import './Cards.scss';
 
 const points = [0.5, 1, 2, 3, 5, 8, 13, -1];
 
-function Cards({ userPoint, showPoints }) {
+function Cards({ userPoint, showVotes }) {
     const pokers = points.map((point) => {
         return (
             <a
                 key={point}
                 className={`__cards__card ${userPoint === point ? '__cards__card--active' : ''}`}
-                onClick={() => db.setPoint(point, userPoint !== point && showPoints)}
+                onClick={() => db.setPoint(point, userPoint !== point && showVotes)}
                 onContextMenu={() => {}}
             >
                 <img className="position-relative" src={`img/${point}.png`} alt={point} />
@@ -25,7 +25,7 @@ function Cards({ userPoint, showPoints }) {
 
 Cards.propTypes = {
     userPoint: PropTypes.number,
-    showPoints: PropTypes.bool,
+    showVotes: PropTypes.bool,
 };
 
 export default React.memo(Cards);

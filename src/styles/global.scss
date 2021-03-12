@@ -9,10 +9,12 @@ input[type='checkbox'] {
     cursor: pointer;
 }
 
-label {
-    cursor: pointer;
-    &:hover {
-        text-decoration: underline;
+.form-check {
+    label {
+        cursor: pointer;
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }
 

@@ -9,13 +9,13 @@ import { ucfirst } from 'libraries/stringHelper';
 import reporter from 'libraries/reporter';
 import './Player.scss';
 
-function Player({ name, player, showPoints }) {
+function Player({ name, player, showVotes }) {
     reporter.log('Player render()');
 
     let cardStatus = 'none';
     if (!player.connected) {
         cardStatus = 'offline';
-    } else if (showPoints) {
+    } else if (showVotes) {
         cardStatus = 'front';
     } else if (player.point !== 0) {
         cardStatus = 'back';
@@ -23,7 +23,7 @@ function Player({ name, player, showPoints }) {
 
     const [removeModal, setRemoveModal] = useState(false);
     const user = useSelector((state) => state.user);
-    const cheated = showPoints && player.cheated && player.connected;
+    const cheated = showVotes && player.cheated && player.connected;
 
     return (
         <div
@@ -88,7 +88,7 @@ function areEqual(prevProps, nextProps) {
 Player.propTypes = {
     name: PropTypes.string,
     player: PropTypes.object,
-    showPoints: PropTypes.bool,
+    showVotes: PropTypes.bool,
 };
 
 export default React.memo(Player, areEqual);
