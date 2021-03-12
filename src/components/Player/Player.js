@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 import { useSelector } from 'react-redux';
 
+import Modal from 'components/Utilities/Modal';
 import db from 'libraries/database';
 import { ucfirst } from 'libraries/stringHelper';
 import reporter from 'libraries/reporter';
@@ -20,6 +21,7 @@ function Player({ name, player, showPoints }) {
         cardStatus = 'back';
     }
 
+    const [removeModal, setRemoveModal] = useState(false);
     const user = useSelector((state) => state.user);
     const cheated = showPoints && player.cheated && player.connected;
 
@@ -28,7 +30,7 @@ function Player({ name, player, showPoints }) {
             className="text-center __player"
             onContextMenu={(event) => {
                 event.preventDefault();
-                removePlayer(name);
+                setRemoveModal(true);
             }}
         >
             <div className="mx-auto __player__container">
@@ -66,14 +68,17 @@ function Player({ name, player, showPoints }) {
                 </div>
             </div>
             <div className={`${user.userName === name ? 'text-warning' : ''} __player__name`}>{ucfirst(name)}</div>
+            {removeModal && (
+                <Modal
+                    title={`Remove Player "${name}" ?`}
+                    body={<i>* Players can join as observers if they don't intend to vote.</i>}
+                    setVisibility={setRemoveModal}
+                    confirmText="Remove"
+                    confirmHandler={() => db.deletePlayer(name)}
+                />
+            )}
         </div>
     );
-}
-
-function removePlayer(playerName) {
-    if (window.confirm('Remove player "' + playerName + '" ?')) {
-        db.deletePlayer(playerName);
-    }
 }
 
 function areEqual(prevProps, nextProps) {

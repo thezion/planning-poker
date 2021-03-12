@@ -27,8 +27,12 @@ export const sessionSlice = createSlice({
             localStorage.setItem(KEY_SESSION_NAME, sessionName);
             state.sessionName = sessionName;
         },
-        setData: (state, action) => {
-            state.data = { ...state.data, ...action.payload };
+        setSessionData: (state, action) => {
+            const newData = { ...state.data, ...action.payload };
+            if (typeof newData.players !== 'object') {
+                newData.players = {};
+            }
+            state.data = newData;
         },
         setConfetti: (state, action) => {
             state.confetti = !!action.payload;
@@ -36,6 +40,6 @@ export const sessionSlice = createSlice({
     },
 });
 
-export const { setSessionName, setData, setConfetti } = sessionSlice.actions;
+export const { setSessionName, setSessionData, setConfetti } = sessionSlice.actions;
 
 export default sessionSlice.reducer;

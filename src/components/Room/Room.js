@@ -1,8 +1,8 @@
-import React, { Suspense, useState, useEffect } from 'react';
+import React, { Suspense, Profiler, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setSessionName, setData, setConfetti } from 'store/session';
+import { setSessionName, setSessionData, setConfetti } from 'store/session';
 import { setTrackCheating } from 'store/user';
 import { ucfirst, trimName } from 'libraries/stringHelper';
 import { getAvgPoint } from 'libraries/mathHelper';
@@ -41,7 +41,7 @@ function Room({ match, location }) {
             db.attachListener((snapshot) => {
                 reporter.log('Session data updated');
                 const data = snapshot.val();
-                dispatch(setData(data));
+                dispatch(setSessionData(data));
                 // points
                 const shouldShowVotes = data.showPoints ? true : allPlayersVoted(data.players);
                 setShowPoints(shouldShowVotes);
@@ -74,7 +74,9 @@ function Room({ match, location }) {
             </div>
 
             <div className="mx-auto __room__table">
-                <Table players={sessionData.players || {}} showPoints={showPoints} />
+                <Profiler id="TableProfiler" onRender={console.log}>
+                    <Table players={sessionData.players} showPoints={showPoints} />
+                </Profiler>
             </div>
 
             {!observer && (
@@ -89,7 +91,7 @@ function Room({ match, location }) {
                     </div>
                     <div className="col-2">
                         <button className="btn btn-secondary w-100" onClick={() => db.showVotes()}>
-                            {showPoints ? 'Avg = ' + getAvgPoint(sessionData.players || {}) + ' pt' : 'Show Votes'}
+                            {showPoints ? 'Avg = ' + getAvgPoint(sessionData.players) + ' pt' : 'Show Votes'}
                         </button>
                     </div>
                 </div>
