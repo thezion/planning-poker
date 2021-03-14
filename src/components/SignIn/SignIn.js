@@ -20,7 +20,7 @@ function SignIn() {
         event.preventDefault();
         if (sessionName && userName) {
             dispatch(setUserName(userName));
-            history.push(`/${sessionName}`);
+            history.push('/' + trimName(sessionName));
         }
     };
 
@@ -40,7 +40,7 @@ function SignIn() {
                         name="session_name"
                         placeholder="e.g. avengers/fantastic4..."
                         value={sessionName}
-                        onChange={(event) => updateSessionName(trimName(event.target.value))}
+                        onChange={(event) => updateSessionName(event.target.value)}
                     />
                 </div>
                 <div className="mb-4">
@@ -55,7 +55,7 @@ function SignIn() {
                         name="user_name"
                         placeholder="Please pick a unique nickname..."
                         value={userName}
-                        onChange={(event) => updateUserName(trimName(event.target.value))}
+                        onChange={(event) => updateUserName(event.target.value)}
                     />
                 </div>
                 <div>
@@ -63,7 +63,7 @@ function SignIn() {
                         Join Session
                     </button>
                     <span className="me-2 ms-3">OR</span>
-                    <Link to={`/${sessionName}?observer`} className="text-primary">
+                    <Link to={'/' + trimName(sessionName) + '?observer'} className="text-primary">
                         Join As Observer
                     </Link>
                 </div>
