@@ -5,12 +5,14 @@ exports.handler = async (event) => {
     const sessionName = event.queryStringParameters.sessionName;
 
     // elasticsearch
-    const url = 'https://REPLACE_URL_HERE';
+    const url = `https://____:____@planning-poker-3350690858.us-east-1.bonsaisearch.net:443/planning-poker/_doc/_search`;
     const query = {
-        query: { term: { room: sessionName } },
         size: 100,
         sort: [{ _id: { order: 'desc' } }],
     };
+    if (sessionName) {
+        query.query = { term: { room: sessionName } };
+    }
 
     // request data
     try {

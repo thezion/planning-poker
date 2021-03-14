@@ -35,7 +35,7 @@ function Analytic({ sessionName }) {
     if (historyData.length === 0) {
         return (
             <div className="text-center">
-                No data. This is powered by a Lambda function which has a delay due to cold start.
+                Preparing data... This is powered by a Lambda function which has a delay due to cold start.
             </div>
         );
     }
