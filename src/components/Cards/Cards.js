@@ -12,7 +12,11 @@ function Cards({ userPoint, showVotes }) {
             <a
                 key={point}
                 className={`__cards__card ${userPoint === point ? '__cards__card--active' : ''}`}
-                onClick={() => db.setPoint(point, userPoint !== point && showVotes)}
+                onClick={() => {
+                    if (userPoint !== point) {
+                        db.setPoint(point, showVotes);
+                    }
+                }}
                 onContextMenu={() => {}}
             >
                 <img className="position-relative" src={`img/${point}.png`} alt={point} />
