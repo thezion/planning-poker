@@ -11,7 +11,7 @@ const holidays = [
     { name: "St. Patrick's Day", emojis: ['☘️', '🍀', '🍺'], date: '2025-03-17' },
     { name: 'Easter', emojis: ['🐰', '🥚', '🌸'], date: '2025-04-20' },
     { name: 'Memorial Day', emojis: ['🇺🇸', '🌹', '🕊️'], date: '2025-05-26' },
-    { name: 'Independence Day', emojis: ['🗽', '🦅', '🎺'], date: '2025-07-04' },
+    { name: 'Independence Day', emojis: ['🗽', '🦅', '🎆'], date: '2025-07-04' },
     { name: 'Labor Day', emojis: ['👷', '🏭', '🔧'], date: '2025-09-01' },
     { name: 'Columbus Day', emojis: ['🚢', '🗺️', '🌍'], date: '2025-10-13' },
     { name: 'Halloween', emojis: ['🎃', '👻', '🕷️'], date: '2025-10-31' },
