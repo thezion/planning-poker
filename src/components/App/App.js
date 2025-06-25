@@ -3,8 +3,7 @@ import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from 'components/Header/Header';
 import SignIn from 'components/SignIn/SignIn';
 import Room from 'components/Room/Room';
-import Confetti from 'components/Animation/Confetti/Confetti';
-// import Confetti from 'components/Animation/Fireworks/Fireworks';
+import Animation from 'components/Animation/index';
 import './App.scss';
 
 function App() {
@@ -18,7 +17,7 @@ function App() {
                         <Route path="/:sessionName" component={Room} />
                     </Switch>
                 </div>
-                <Confetti />
+                <Animation />
             </Router>
         </div>
     );
