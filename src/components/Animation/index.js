@@ -32,7 +32,12 @@ function Animation() {
         return holidayDate >= today && holidayDate <= fourteenDaysFromNow;
     });
 
-    return holiday ? <Holiday emojis={holiday.emojis} /> : <Confetti />;
+    return (
+        <>
+            <Confetti />
+            {holiday && <Holiday emojis={holiday.emojis} />}
+        </>
+    );
 }
 
 export default WithToggle(Animation, 'session.confetti');

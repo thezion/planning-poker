@@ -6,7 +6,7 @@ export default function Holiday({ emojis }) {
 
     useEffect(() => {
         // Create confetti pieces with random properties
-        const pieces = Array.from({ length: 36 }, (_, index) => ({
+        const pieces = Array.from({ length: 24 }, (_, index) => ({
             id: index,
             emoji: emojis[Math.floor(Math.random() * emojis.length)],
             left: Math.random() * 100, // Random horizontal position
