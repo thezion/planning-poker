@@ -16,7 +16,7 @@ export default function Holiday({ emojis }) {
         }));
 
         setConfetti(pieces);
-    }, []);
+    }, [emojis, setConfetti]);
 
     return (
         <div className="__holiday-confetti">
