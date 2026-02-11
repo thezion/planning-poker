@@ -27,9 +27,10 @@ function Room({ match, location, mode = 'points' }) {
     const removedSelf = useSelector((state) => state.session.removedSelf);
     const playersFromStore = sessionData.players ?? {};
     const userName = useSelector((state) => (observer ? '' : state.user.userName));
-    // Ensure current user is in the list when not removed (so name persists when switching poker/tshirt)
+    // Add current user only when store is empty (e.g. just switched poker/tshirt), not when removed by someone else
+    const storeEmpty = Object.keys(playersFromStore).length === 0;
     const players =
-        userName && !observer && !removedSelf && !playersFromStore[userName]
+        userName && !observer && !removedSelf && !playersFromStore[userName] && storeEmpty
             ? { ...playersFromStore, [userName]: { point: mode === 'tshirt' ? '' : 0, connected: true, cheated: false } }
             : playersFromStore;
     // parse data
