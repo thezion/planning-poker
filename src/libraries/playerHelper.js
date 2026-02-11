@@ -13,8 +13,10 @@ export function isUnvoted(point, mode = 'points') {
 }
 
 export function allPlayersVoted(players, mode = 'points') {
-    if (!players) return false;
-    const hasUnvoted = Object.values(players).some((player) => isUnvoted(player.point, mode));
+    if (!players || typeof players !== 'object') return false;
+    const connected = Object.values(players).filter((p) => p.connected);
+    if (connected.length === 0) return false;
+    const hasUnvoted = connected.some((player) => isUnvoted(player.point, mode));
     return !hasUnvoted;
 }
 

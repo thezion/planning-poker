@@ -63,7 +63,10 @@ function Player({ name, player, showVotes, mode = 'points' }) {
                         classNames="card"
                     >
                         {mode === 'tshirt' ? (
-                            <span className="__player__size" aria-label={`Vote: ${player.point}`}>
+                            <span
+                                className={`__player__size __player__size--${(player.point || '').toLowerCase()}`}
+                                aria-label={`Vote: ${player.point}`}
+                            >
                                 {player.point}
                             </span>
                         ) : (
