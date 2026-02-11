@@ -14,7 +14,8 @@ class FirebaseClient {
     initialize(sessionName, userName, sessionType = 'points') {
         console.info('DB connected');
         this.online();
-        this.sessionName = sessionName;
+        // Separate storage per route: poker and t-shirt sessions don't share players
+        this.sessionName = sessionType === 'tshirt' ? `tshirt_${sessionName}` : sessionName;
         this.userName = userName;
         this.sessionType = sessionType;
         if (this.userName) {
