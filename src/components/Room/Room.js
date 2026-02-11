@@ -2,7 +2,7 @@ import React, { Profiler, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setSessionName, setSessionData, setConfetti } from 'store/session';
+import { setSessionName, setSessionData, setConfetti, setRemovedSelf } from 'store/session';
 import { ucfirst, trimName } from 'libraries/stringHelper';
 import { getAvgPoint } from 'libraries/mathHelper';
 import { allPlayersVoted, getUserPoint, isConsistent } from 'libraries/playerHelper';
@@ -24,11 +24,12 @@ function Room({ match, location, mode = 'points' }) {
     const observer = location.search.indexOf('?observer') === 0;
     // get data from store
     const sessionData = useSelector((state) => state.session.data) || {};
+    const removedSelf = useSelector((state) => state.session.removedSelf);
     const playersFromStore = sessionData.players ?? {};
     const userName = useSelector((state) => (observer ? '' : state.user.userName));
-    // Ensure current user is always in the list so their name persists when switching poker/tshirt
+    // Ensure current user is in the list when not removed (so name persists when switching poker/tshirt)
     const players =
-        userName && !observer && !playersFromStore[userName]
+        userName && !observer && !removedSelf && !playersFromStore[userName]
             ? { ...playersFromStore, [userName]: { point: mode === 'tshirt' ? '' : 0, connected: true, cheated: false } }
             : playersFromStore;
     // parse data
@@ -55,6 +56,7 @@ function Room({ match, location, mode = 'points' }) {
             });
             // clean up
             return () => {
+                dispatch(setRemovedSelf(false));
                 db.detachListener();
                 db.offline();
             };
