@@ -100,7 +100,7 @@ function Room({ match, location, mode = 'points' }) {
                 </div>
             )}
 
-            <Setting />
+            <Setting mode={mode} />
         </div>
     );
 }

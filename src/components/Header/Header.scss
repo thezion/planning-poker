@@ -5,12 +5,18 @@
     }
 
     &__nav {
-        flex-direction: row;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap;
+        align-items: center;
+
         .nav-link {
+            display: inline-block;
             color: rgba(255, 255, 255, 0.75);
             padding: 0.25rem 0.75rem;
             margin: 0 0.125rem;
             border-radius: 4px;
+            white-space: nowrap;
             &:hover {
                 color: rgba(255, 255, 255, 0.9);
             }
