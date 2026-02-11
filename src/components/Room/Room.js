@@ -23,13 +23,14 @@ function Room({ match, location, mode = 'points' }) {
     const sessionName = trimName(match.params.sessionName);
     const observer = location.search.indexOf('?observer') === 0;
     // get data from store
-    const sessionData = useSelector((state) => state.session.data);
+    const sessionData = useSelector((state) => state.session.data) || {};
+    const players = sessionData.players ?? {};
     const userName = useSelector((state) => (observer ? '' : state.user.userName));
     // parse data
-    const userPoint = getUserPoint(sessionData.players, userName);
-    const showVotes = sessionData.showPoints ? true : allPlayersVoted(sessionData.players, mode);
+    const userPoint = getUserPoint(players, userName);
+    const showVotes = sessionData.showPoints ? true : allPlayersVoted(players, mode);
     // confetti
-    if (showVotes && isConsistent(sessionData.players, mode)) {
+    if (showVotes && isConsistent(players, mode)) {
         dispatch(setConfetti(true));
         window.setTimeout(() => dispatch(setConfetti(false)), 5000);
     }
@@ -39,6 +40,8 @@ function Room({ match, location, mode = 'points' }) {
             dispatch(setSessionName(sessionName));
         }
         if (sessionName && (userName || observer)) {
+            // Reset session data when switching mode so we don't render stale poker data in t-shirt room (or vice versa)
+            dispatch(setSessionData({ showPoints: 0, players: {} }));
             db.initialize(sessionName, userName, mode);
             // listener
             db.attachListener((snapshot) => {
@@ -63,7 +66,7 @@ function Room({ match, location, mode = 'points' }) {
 
             <div className="mx-auto __room__table">
                 <Profiler id="TableProfiler" onRender={console.log}>
-                    <Table players={sessionData.players} showVotes={showVotes} mode={mode} />
+                    <Table players={players} showVotes={showVotes} mode={mode} />
                 </Profiler>
             </div>
 
@@ -80,7 +83,10 @@ function Room({ match, location, mode = 'points' }) {
                     </div>
                     <div className="col-8">
                         {mode === 'tshirt' ? (
-                            <TshirtCards userPoint={userPoint} showVotes={showVotes} />
+                            <TshirtCards
+                                userPoint={typeof userPoint === 'string' ? userPoint : undefined}
+                                showVotes={showVotes}
+                            />
                         ) : (
                             <Cards userPoint={userPoint} showVotes={showVotes} />
                         )}
@@ -91,7 +97,7 @@ function Room({ match, location, mode = 'points' }) {
                             onClick={() => db.showVotes()}
                         >
                             {showVotes && mode === 'points'
-                                ? 'Avg = ' + getAvgPoint(sessionData.players) + ' pt'
+                                ? 'Avg = ' + getAvgPoint(players) + ' pt'
                                 : showVotes
                                 ? 'Votes revealed'
                                 : 'Show Votes'}

@@ -67,7 +67,7 @@ function Player({ name, player, showVotes, mode = 'points' }) {
                                 <img src="img/0.png" alt="Pass" />
                             ) : (
                                 <span
-                                    className={`__player__size __player__size--${(player.point || '').toLowerCase()}`}
+                                    className={`__player__size __player__size--${String(player.point ?? '').toLowerCase()}`}
                                     aria-label={`Vote: ${player.point}`}
                                 >
                                     {player.point}

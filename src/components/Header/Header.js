@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { ucfirst } from 'libraries/stringHelper';
@@ -15,11 +15,21 @@ function getSessionNameFromPath(pathname) {
 function Header() {
     const userName = useSelector((state) => state.user.userName);
     const location = useLocation();
+    const history = useHistory();
     const pathname = location.pathname || '';
     const sessionName = getSessionNameFromPath(pathname);
     const inRoom = sessionName && pathname !== '/';
     const onPoker = inRoom && (pathname.startsWith('/poker/') || (!pathname.startsWith('/tshirt/') && !pathname.startsWith('/poker/')));
     const onTshirt = inRoom && pathname.startsWith('/tshirt/');
+
+    const goToPoker = (e) => {
+        e.preventDefault();
+        if (sessionName) history.push(`/poker/${sessionName}`);
+    };
+    const goToTshirt = (e) => {
+        e.preventDefault();
+        if (sessionName) history.push(`/tshirt/${sessionName}`);
+    };
 
     return (
         <nav className="navbar navbar-dark bg-dark __header">
@@ -34,18 +44,20 @@ function Header() {
                 </Link>
                 {inRoom && (
                     <div className="navbar-nav __header__nav me-3">
-                        <Link
+                        <button
+                            type="button"
                             className={`nav-link ${onPoker ? 'active' : ''}`}
-                            to={`/poker/${sessionName}`}
+                            onClick={goToPoker}
                         >
                             Poker
-                        </Link>
-                        <Link
+                        </button>
+                        <button
+                            type="button"
                             className={`nav-link ${onTshirt ? 'active' : ''}`}
-                            to={`/tshirt/${sessionName}`}
+                            onClick={goToTshirt}
                         >
                             T-shirt
-                        </Link>
+                        </button>
                     </div>
                 )}
                 <div className="navbar-text ms-auto">
