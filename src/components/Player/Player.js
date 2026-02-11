@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
+import { setRemovedSelf } from 'store/session';
 import Modal from 'components/Utilities/Modal';
 import db from 'libraries/database';
 import { ucfirst } from 'libraries/stringHelper';
@@ -24,6 +25,7 @@ function Player({ name, player, showVotes, mode = 'points' }) {
     }
 
     const [removeModal, setRemoveModal] = useState(false);
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
     const cheated = showVotes && player.cheated && player.connected;
 
@@ -91,7 +93,12 @@ function Player({ name, player, showVotes, mode = 'points' }) {
                     body={<i>* Players can join as observers if they don't intend to vote.</i>}
                     setVisibility={setRemoveModal}
                     confirmText="Remove"
-                    confirmHandler={() => db.deletePlayer(name)}
+                    confirmHandler={() => {
+                        db.deletePlayer(name);
+                        if (name === user.userName) {
+                            dispatch(setRemovedSelf(true));
+                        }
+                    }}
                 />
             )}
         </div>

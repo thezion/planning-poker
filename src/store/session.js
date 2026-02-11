@@ -9,6 +9,7 @@ export const sessionSlice = createSlice({
     initialState: {
         sessionName: localStorage.getItem(KEY_SESSION_NAME) || '',
         confetti: false,
+        removedSelf: false, // true when current user removed themselves (stay as observer, hide own card)
         data: {
             showPoints: 0,
             players: {
@@ -37,9 +38,12 @@ export const sessionSlice = createSlice({
         setConfetti: (state, action) => {
             state.confetti = !!action.payload;
         },
+        setRemovedSelf: (state, action) => {
+            state.removedSelf = !!action.payload;
+        },
     },
 });
 
-export const { setSessionName, setSessionData, setConfetti } = sessionSlice.actions;
+export const { setSessionName, setSessionData, setConfetti, setRemovedSelf } = sessionSlice.actions;
 
 export default sessionSlice.reducer;
