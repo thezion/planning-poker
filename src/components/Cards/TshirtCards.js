@@ -21,7 +21,7 @@ function TshirtCards({ userPoint, showVotes }) {
             aria-label={`Vote ${size}`}
             aria-pressed={userPoint === size}
         >
-            <span className="__cards__card__box">
+            <span className={`__cards__card__box __cards__card__box--${size.toLowerCase()}`}>
                 <span className="__cards__card__label">{size}</span>
             </span>
         </button>
