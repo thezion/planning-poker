@@ -24,7 +24,7 @@ export function isConsistent(players, mode = 'points') {
     const playerArr = Object.values(players || {});
     const validPlayerArr = playerArr.filter((player) => {
         if (!player.connected) return false;
-        if (mode === 'tshirt') return player.point !== '' && player.point != null;
+        if (mode === 'tshirt') return typeof player.point === 'string' && player.point !== '';
         return player.point >= 0 && player.point !== 0;
     });
     if (validPlayerArr.length < 2) return false;
