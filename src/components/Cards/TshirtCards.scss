@@ -1,30 +1,62 @@
 .__cards--tshirt {
+    flex-wrap: nowrap;
+    gap: 8px;
+    align-items: flex-end;
+
     .__cards__card--tshirt {
+        flex: 0 0 auto;
+        width: 64px;
+        height: 120px;
+        padding: 0;
+        margin: 0;
+        position: relative;
+        border: none;
+        background: transparent;
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+
+        &:focus {
+            outline: none;
+        }
+
+        &:hover .__cards__card__box {
+            transform: translateY(-30px);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        &.__cards__card--active .__cards__card__box {
+            transform: translateY(-30px);
+            border-color: #fff;
+            box-shadow: #fff 0px 0px 8px;
+        }
+    }
+
+    .__cards__card__box {
+        width: 60px;
+        height: 90px;
+        padding: 0 2px;
+        box-sizing: border-box;
         display: flex;
         align-items: center;
         justify-content: center;
-        min-width: 56px;
         border: 2px solid rgba(255, 255, 255, 0.4);
         border-radius: 6px;
-        background: rgba(0, 0, 0, 0.25);
-        color: #fff;
-        transition: all ease 0.2s;
-
-        &:hover {
-            border-color: rgba(255, 255, 255, 0.8);
-            background: rgba(0, 0, 0, 0.4);
-        }
-
-        &--active {
-            border-color: #fff;
-            box-shadow: #fff 0px 0px 8px;
-            background: rgba(0, 0, 0, 0.5);
-        }
+        /* DEV: red background to see card bounds - remove for production */
+        background: rgba(200, 50, 50, 0.85);
+        transform: translateY(0);
+        transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
     }
 
     .__cards__card__label {
         font-size: 1.25rem;
         font-weight: 600;
         user-select: none;
+        line-height: 1;
     }
 }
