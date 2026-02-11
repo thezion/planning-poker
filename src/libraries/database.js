@@ -11,13 +11,15 @@ class FirebaseClient {
         reporter.log('new FirebaseClient()');
     }
 
-    initialize(sessionName, userName) {
+    initialize(sessionName, userName, sessionType = 'points') {
         console.info('DB connected');
         this.online();
         this.sessionName = sessionName;
         this.userName = userName;
+        this.sessionType = sessionType;
         if (this.userName) {
-            this.setPoint(0);
+            const unvotedValue = sessionType === 'tshirt' ? '' : 0;
+            this.setPoint(unvotedValue);
             // track online status
             const connectedRef = this.db.ref('.info/connected');
             connectedRef.on('value', (snap) => {
@@ -42,7 +44,8 @@ class FirebaseClient {
             .catch(this.errorHandler);
     }
 
-    clearVotes() {
+    clearVotes(mode = 'points') {
+        const unvotedValue = mode === 'tshirt' ? '' : 0;
         this.db
             .ref(this.sessionName)
             .once('value')
@@ -55,7 +58,7 @@ class FirebaseClient {
                 };
                 for (const index in res.players) {
                     newSessionData.players[index] = {
-                        point: 0,
+                        point: unvotedValue,
                         cheated: false,
                         connected: !!res.players[index].connected,
                     };

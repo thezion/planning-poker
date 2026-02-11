@@ -4,6 +4,23 @@
         height: 1.5em;
     }
 
+    &__nav {
+        flex-direction: row;
+        .nav-link {
+            color: rgba(255, 255, 255, 0.75);
+            padding: 0.25rem 0.75rem;
+            margin: 0 0.125rem;
+            border-radius: 4px;
+            &:hover {
+                color: rgba(255, 255, 255, 0.9);
+            }
+            &.active {
+                color: #fff;
+                background: rgba(255, 255, 255, 0.2);
+            }
+        }
+    }
+
     &__profile {
         height: 1.25em;
         vertical-align: text-bottom;

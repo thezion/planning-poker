@@ -4,9 +4,17 @@ import Player from 'components/Player/Player';
 import Loading from 'components/Utilities/Loading';
 import './Table.scss';
 
-function Table({ players, showVotes }) {
+function Table({ players, showVotes, mode = 'points' }) {
     const PlayerElems = Object.keys(players).map((playerName) => {
-        return <Player key={playerName} name={playerName} player={players[playerName]} showVotes={showVotes} />;
+        return (
+            <Player
+                key={playerName}
+                name={playerName}
+                player={players[playerName]}
+                showVotes={showVotes}
+                mode={mode}
+            />
+        );
     });
 
     let tableSize = 'sm';
@@ -28,6 +36,7 @@ function Table({ players, showVotes }) {
 Table.propTypes = {
     players: PropTypes.object,
     showVotes: PropTypes.bool,
+    mode: PropTypes.oneOf(['points', 'tshirt']),
 };
 
 export default Table;

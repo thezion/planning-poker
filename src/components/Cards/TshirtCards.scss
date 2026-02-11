@@ -1,0 +1,30 @@
+.__cards--tshirt {
+    .__cards__card--tshirt {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 56px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-radius: 6px;
+        background: rgba(0, 0, 0, 0.25);
+        color: #fff;
+        transition: all ease 0.2s;
+
+        &:hover {
+            border-color: rgba(255, 255, 255, 0.8);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        &--active {
+            border-color: #fff;
+            box-shadow: #fff 0px 0px 8px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+    }
+
+    .__cards__card__label {
+        font-size: 1.25rem;
+        font-weight: 600;
+        user-select: none;
+    }
+}

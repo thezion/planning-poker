@@ -5,25 +5,27 @@ export function getUserPoint(players, userName) {
     return players[userName].point;
 }
 
-export function allPlayersVoted(players) {
-    return (
-        Object.values(players).filter((player) => {
-            return player.point === 0;
-        }).length === 0
-    );
+export function isUnvoted(point, mode = 'points') {
+    if (mode === 'tshirt') {
+        return point === '' || point === undefined || point === null;
+    }
+    return point === 0;
 }
 
-export function isConsistent(players) {
-    const playerArr = Object.values(players);
-    // find out online players who voted
+export function allPlayersVoted(players, mode = 'points') {
+    if (!players) return false;
+    const hasUnvoted = Object.values(players).some((player) => isUnvoted(player.point, mode));
+    return !hasUnvoted;
+}
+
+export function isConsistent(players, mode = 'points') {
+    const playerArr = Object.values(players || {});
     const validPlayerArr = playerArr.filter((player) => {
-        return player.connected && player.point >= 0;
+        if (!player.connected) return false;
+        if (mode === 'tshirt') return player.point !== '' && player.point != null;
+        return player.point >= 0 && player.point !== 0;
     });
-    const consistent =
-        validPlayerArr.length >= 2 &&
-        validPlayerArr[0].point > 0 &&
-        validPlayerArr.every((player) => {
-            return player.point === validPlayerArr[0].point;
-        });
-    return consistent;
+    if (validPlayerArr.length < 2) return false;
+    const first = validPlayerArr[0].point;
+    return validPlayerArr.every((player) => player.point === first);
 }
