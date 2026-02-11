@@ -1,4 +1,16 @@
 .__room {
+    &__reveal-btn--revealed,
+    button.__room__reveal-btn--revealed.btn {
+        cursor: default !important;
+
+        &:hover,
+        &:focus,
+        &:active {
+            background-color: var(--bs-secondary, #6c757d) !important;
+            border-color: var(--bs-secondary, #6c757d) !important;
+        }
+    }
+
     background-position: center top;
     background-repeat: no-repeat;
     min-height: 580px;

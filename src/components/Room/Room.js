@@ -86,7 +86,10 @@ function Room({ match, location, mode = 'points' }) {
                         )}
                     </div>
                     <div className="col-2">
-                        <button className="btn btn-secondary w-100" onClick={() => db.showVotes()}>
+                        <button
+                            className={`btn btn-secondary w-100 __room__reveal-btn ${showVotes ? '__room__reveal-btn--revealed' : ''}`}
+                            onClick={() => db.showVotes()}
+                        >
                             {showVotes && mode === 'points'
                                 ? 'Avg = ' + getAvgPoint(sessionData.players) + ' pt'
                                 : showVotes

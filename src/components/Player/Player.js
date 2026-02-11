@@ -63,12 +63,16 @@ function Player({ name, player, showVotes, mode = 'points' }) {
                         classNames="card"
                     >
                         {mode === 'tshirt' ? (
-                            <span
-                                className={`__player__size __player__size--${(player.point || '').toLowerCase()}`}
-                                aria-label={`Vote: ${player.point}`}
-                            >
-                                {player.point}
-                            </span>
+                            isUnvoted(player.point, 'tshirt') ? (
+                                <img src="img/0.png" alt="Pass" />
+                            ) : (
+                                <span
+                                    className={`__player__size __player__size--${(player.point || '').toLowerCase()}`}
+                                    aria-label={`Vote: ${player.point}`}
+                                >
+                                    {player.point}
+                                </span>
+                            )
                         ) : (
                             <img src={`img/${player.point}.png`} alt={player.point} />
                         )}
