@@ -85,6 +85,40 @@ class FirebaseClient {
         }
     }
 
+    renameUser(newName) {
+        if (!this.sessionName || !this.userName || !newName || this.userName === newName) return;
+        const newNameTrimmed = (newName || '').trim().toLowerCase();
+        if (!newNameTrimmed || this.userName === newNameTrimmed) return;
+        const oldPath = this.sessionName + '/players/' + this.userName;
+        const newPath = this.sessionName + '/players/' + newNameTrimmed;
+        this.db
+            .ref(oldPath)
+            .once('value')
+            .then((snapshot) => {
+                const data = snapshot.val();
+                if (!data) {
+                    this.userName = newNameTrimmed;
+                    return;
+                }
+                return this.db
+                    .ref(newPath)
+                    .set({ ...data, connected: true })
+                    .then(() => this.db.ref(oldPath).remove())
+                    .then(() => {
+                        this.userName = newNameTrimmed;
+                        const connectedRef = this.db.ref('.info/connected');
+                        connectedRef.on('value', (snap) => {
+                            if (snap.val() === true) {
+                                const con = this.db.ref(this.sessionName + '/players/' + this.userName + '/connected');
+                                con.onDisconnect().remove();
+                                con.set(true);
+                            }
+                        });
+                    });
+            })
+            .catch(this.errorHandler);
+    }
+
     attachListener(callbackFunc) {
         this.db.ref(this.sessionName).off();
         this.db.ref(this.sessionName).on('value', callbackFunc);

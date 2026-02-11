@@ -24,8 +24,13 @@ function Room({ match, location, mode = 'points' }) {
     const observer = location.search.indexOf('?observer') === 0;
     // get data from store
     const sessionData = useSelector((state) => state.session.data) || {};
-    const players = sessionData.players ?? {};
+    const playersFromStore = sessionData.players ?? {};
     const userName = useSelector((state) => (observer ? '' : state.user.userName));
+    // Ensure current user is always in the list so their name persists when switching poker/tshirt
+    const players =
+        userName && !observer && !playersFromStore[userName]
+            ? { ...playersFromStore, [userName]: { point: mode === 'tshirt' ? '' : 0, connected: true, cheated: false } }
+            : playersFromStore;
     // parse data
     const userPoint = getUserPoint(players, userName);
     const showVotes = sessionData.showPoints ? true : allPlayersVoted(players, mode);

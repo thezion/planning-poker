@@ -11,7 +11,7 @@ function SignIn() {
     const history = useHistory();
 
     const defaultSessionName = useSelector((state) => state.session.sessionName);
-    const defaultUserName = useSelector((state) => state.user.userName);
+    const defaultUserName = useSelector((state) => state.user.displayName || state.user.userName);
 
     const [sessionName, updateSessionName] = useState(defaultSessionName);
     const [userName, updateUserName] = useState(defaultUserName);

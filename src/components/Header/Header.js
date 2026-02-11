@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { ucfirst } from 'libraries/stringHelper';
+import { setUserName } from 'store/user';
+import { ucfirst, trimName } from 'libraries/stringHelper';
+import db from 'libraries/database';
+import Modal from 'components/Utilities/Modal';
 import './Header.scss';
 
 function getSessionNameFromPath(pathname) {
@@ -13,7 +17,9 @@ function getSessionNameFromPath(pathname) {
 }
 
 function Header() {
+    const dispatch = useDispatch();
     const userName = useSelector((state) => state.user.userName);
+    const displayName = useSelector((state) => state.user.displayName);
     const location = useLocation();
     const history = useHistory();
     const pathname = location.pathname || '';
@@ -22,6 +28,9 @@ function Header() {
     const onPoker = inRoom && (pathname.startsWith('/poker/') || (!pathname.startsWith('/tshirt/') && !pathname.startsWith('/poker/')));
     const onTshirt = inRoom && pathname.startsWith('/tshirt/');
 
+    const [showNameModal, setShowNameModal] = useState(false);
+    const [nameInput, setNameInput] = useState('');
+
     const goToPoker = (e) => {
         e.preventDefault();
         if (sessionName) history.push(`/poker/${sessionName}`);
@@ -29,6 +38,19 @@ function Header() {
     const goToTshirt = (e) => {
         e.preventDefault();
         if (sessionName) history.push(`/tshirt/${sessionName}`);
+    };
+
+    const openNameModal = () => {
+        const nameToShow = displayName || userName || '';
+        setNameInput(nameToShow ? ucfirst(nameToShow) : '');
+        setShowNameModal(true);
+    };
+
+    const saveName = () => {
+        const trimmed = (nameInput || '').trim();
+        if (!trimmed) return;
+        dispatch(setUserName(trimmed));
+        if (inRoom) db.renameUser(trimName(trimmed));
     };
 
     return (
@@ -62,9 +84,40 @@ function Header() {
                 )}
                 <div className="navbar-text ms-auto">
                     <img className="__header__profile" alt="profile" src="img/profile.svg" />
-                    <span className="ms-1">{ucfirst(userName) || 'Guest'}</span>
+                    <button
+                        type="button"
+                        className="__header__name ms-1"
+                        onClick={openNameModal}
+                        title="Change your name"
+                    >
+                        {displayName ? ucfirst(displayName) : 'Guest'}
+                    </button>
                 </div>
             </div>
+            {showNameModal && (
+                <Modal
+                    title="Change your name"
+                    body={
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Your nickname"
+                            value={nameInput}
+                            onChange={(e) => setNameInput(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    saveName();
+                                    setShowNameModal(false);
+                                }
+                            }}
+                            autoFocus
+                        />
+                    }
+                    confirmText="Save"
+                    confirmHandler={saveName}
+                    setVisibility={setShowNameModal}
+                />
+            )}
         </nav>
     );
 }

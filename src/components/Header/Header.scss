@@ -35,4 +35,18 @@
         height: 1.25em;
         vertical-align: text-bottom;
     }
+
+    &__name {
+        background: none;
+        border: none;
+        padding: 0;
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }

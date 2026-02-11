@@ -82,7 +82,9 @@ function Player({ name, player, showVotes, mode = 'points' }) {
                     )}
                 </div>
             </div>
-            <div className={`${user.userName === name ? 'text-warning' : ''} __player__name`}>{ucfirst(name)}</div>
+            <div className={`${user.userName === name ? 'text-warning' : ''} __player__name`}>
+                {user.userName === name && user.displayName ? user.displayName : ucfirst(name)}
+            </div>
             {removeModal && (
                 <Modal
                     title={`Remove Player "${name}" ?`}
