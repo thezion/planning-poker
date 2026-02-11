@@ -4,7 +4,7 @@ A simple game for estimating the relative size of tasks.
 
 ## Local development
 
-Requires **Node.js 20** (see `.nvmrc`). Use `nvm use` if you use nvm.
+Requires **Node.js 24** (see `.nvmrc`). Use `nvm use` if you use nvm.
 
 ```bash
 npm install
@@ -16,7 +16,7 @@ The app uses `NODE_OPTIONS=--openssl-legacy-provider` for `start` and `build` so
 ## Run with docker
 
 ```
-docker run -d -t --name planning-poker -p 3001:3000 -v ${PWD}:/app node:20
+docker run -d -t --name planning-poker -p 3001:3000 -v ${PWD}:/app node:24
 ```
 
 ## Play Online
