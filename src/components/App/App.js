@@ -14,7 +14,18 @@ function App() {
                 <div className="position-relative">
                     <Switch>
                         <Route path="/" exact component={SignIn} />
-                        <Route path="/:sessionName" component={Room} />
+                        <Route
+                            path="/tshirt/:sessionName"
+                            render={({ match, location }) => <Room match={match} location={location} mode="tshirt" />}
+                        />
+                        <Route
+                            path="/poker/:sessionName"
+                            render={({ match, location }) => <Room match={match} location={location} mode="points" />}
+                        />
+                        <Route
+                            path="/:sessionName"
+                            render={({ match, location }) => <Room match={match} location={location} mode="points" />}
+                        />
                     </Switch>
                 </div>
                 <Animation />

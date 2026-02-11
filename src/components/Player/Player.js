@@ -6,18 +6,20 @@ import { useSelector } from 'react-redux';
 import Modal from 'components/Utilities/Modal';
 import db from 'libraries/database';
 import { ucfirst } from 'libraries/stringHelper';
+import { isUnvoted } from 'libraries/playerHelper';
 import reporter from 'libraries/reporter';
 import './Player.scss';
 
-function Player({ name, player, showVotes }) {
+function Player({ name, player, showVotes, mode = 'points' }) {
     reporter.log('Player render()');
 
+    const hasVoted = !isUnvoted(player.point, mode);
     let cardStatus = 'none';
     if (!player.connected) {
         cardStatus = 'offline';
     } else if (showVotes) {
         cardStatus = 'front';
-    } else if (player.point !== 0) {
+    } else if (hasVoted) {
         cardStatus = 'back';
     }
 
@@ -60,14 +62,29 @@ function Player({ name, player, showVotes }) {
                         timeout={300}
                         classNames="card"
                     >
-                        <img src={`img/${player.point}.png`} />
+                        {mode === 'tshirt' ? (
+                            isUnvoted(player.point, 'tshirt') ? (
+                                <img src="img/0.png" alt="Pass" />
+                            ) : (
+                                <span
+                                    className={`__player__size __player__size--${String(player.point ?? '').toLowerCase()}`}
+                                    aria-label={`Vote: ${player.point}`}
+                                >
+                                    {player.point}
+                                </span>
+                            )
+                        ) : (
+                            <img src={`img/${player.point}.png`} alt={player.point} />
+                        )}
                     </CSSTransition>
                     {user.trackCheating && cheated && (
                         <img src="img/cheat.gif" width="62" title="Vote has been changed. It's magic!" />
                     )}
                 </div>
             </div>
-            <div className={`${user.userName === name ? 'text-warning' : ''} __player__name`}>{ucfirst(name)}</div>
+            <div className={`${user.userName === name ? 'text-warning' : ''} __player__name`}>
+                {user.userName === name && user.displayName ? user.displayName : ucfirst(name)}
+            </div>
             {removeModal && (
                 <Modal
                     title={`Remove Player "${name}" ?`}
@@ -89,6 +106,7 @@ Player.propTypes = {
     name: PropTypes.string,
     player: PropTypes.object,
     showVotes: PropTypes.bool,
+    mode: PropTypes.oneOf(['points', 'tshirt']),
 };
 
 export default React.memo(Player, areEqual);

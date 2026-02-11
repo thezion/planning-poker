@@ -10,11 +10,12 @@ import db from 'libraries/database';
 import reporter from 'libraries/reporter';
 import Table from 'components/Table/Table';
 import Cards from 'components/Cards/Cards';
+import TshirtCards from 'components/Cards/TshirtCards';
 import Setting from 'components/Setting/Setting';
 
 import './Room.scss';
 
-function Room({ match, location }) {
+function Room({ match, location, mode = 'points' }) {
     reporter.log('Room render()');
     const dispatch = useDispatch();
     const history = useHistory();
@@ -22,13 +23,19 @@ function Room({ match, location }) {
     const sessionName = trimName(match.params.sessionName);
     const observer = location.search.indexOf('?observer') === 0;
     // get data from store
-    const sessionData = useSelector((state) => state.session.data);
+    const sessionData = useSelector((state) => state.session.data) || {};
+    const playersFromStore = sessionData.players ?? {};
     const userName = useSelector((state) => (observer ? '' : state.user.userName));
+    // Ensure current user is always in the list so their name persists when switching poker/tshirt
+    const players =
+        userName && !observer && !playersFromStore[userName]
+            ? { ...playersFromStore, [userName]: { point: mode === 'tshirt' ? '' : 0, connected: true, cheated: false } }
+            : playersFromStore;
     // parse data
-    const userPoint = getUserPoint(sessionData.players, userName);
-    const showVotes = sessionData.showPoints ? true : allPlayersVoted(sessionData.players);
+    const userPoint = getUserPoint(players, userName);
+    const showVotes = sessionData.showPoints ? true : allPlayersVoted(players, mode);
     // confetti
-    if (showVotes && isConsistent(sessionData.players)) {
+    if (showVotes && isConsistent(players, mode)) {
         dispatch(setConfetti(true));
         window.setTimeout(() => dispatch(setConfetti(false)), 5000);
     }
@@ -38,7 +45,9 @@ function Room({ match, location }) {
             dispatch(setSessionName(sessionName));
         }
         if (sessionName && (userName || observer)) {
-            db.initialize(sessionName, userName);
+            // Reset session data when switching mode so we don't render stale poker data in t-shirt room (or vice versa)
+            dispatch(setSessionData({ showPoints: 0, players: {} }));
+            db.initialize(sessionName, userName, mode);
             // listener
             db.attachListener((snapshot) => {
                 reporter.log('Session data updated');
@@ -52,7 +61,7 @@ function Room({ match, location }) {
         } else {
             history.push('/');
         }
-    }, [dispatch, history, sessionName, userName, observer]);
+    }, [dispatch, history, sessionName, userName, observer, mode]);
 
     return (
         <div className="__room" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/img/poker-desk.jpg)` }}>
@@ -62,7 +71,7 @@ function Room({ match, location }) {
 
             <div className="mx-auto __room__table">
                 <Profiler id="TableProfiler" onRender={console.log}>
-                    <Table players={sessionData.players} showVotes={showVotes} />
+                    <Table players={players} showVotes={showVotes} mode={mode} />
                 </Profiler>
             </div>
 
@@ -73,22 +82,36 @@ function Room({ match, location }) {
             ) : (
                 <div className="row">
                     <div className="col-2">
-                        <button className="btn btn-secondary w-100" onClick={() => db.clearVotes()}>
+                        <button className="btn btn-secondary w-100" onClick={() => db.clearVotes(mode)}>
                             Clear Votes
                         </button>
                     </div>
                     <div className="col-8">
-                        <Cards userPoint={userPoint} showVotes={showVotes} />
+                        {mode === 'tshirt' ? (
+                            <TshirtCards
+                                userPoint={typeof userPoint === 'string' ? userPoint : undefined}
+                                showVotes={showVotes}
+                            />
+                        ) : (
+                            <Cards userPoint={userPoint} showVotes={showVotes} />
+                        )}
                     </div>
                     <div className="col-2">
-                        <button className="btn btn-secondary w-100" onClick={() => db.showVotes()}>
-                            {showVotes ? 'Avg = ' + getAvgPoint(sessionData.players) + ' pt' : 'Show Votes'}
+                        <button
+                            className={`btn btn-secondary w-100 __room__reveal-btn ${showVotes ? '__room__reveal-btn--revealed' : ''}`}
+                            onClick={() => db.showVotes()}
+                        >
+                            {showVotes && mode === 'points'
+                                ? 'Avg = ' + getAvgPoint(players) + ' pt'
+                                : showVotes
+                                ? 'Votes revealed'
+                                : 'Show Votes'}
                         </button>
                     </div>
                 </div>
             )}
 
-            <Setting />
+            <Setting mode={mode} />
         </div>
     );
 }

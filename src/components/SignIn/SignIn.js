@@ -11,23 +11,24 @@ function SignIn() {
     const history = useHistory();
 
     const defaultSessionName = useSelector((state) => state.session.sessionName);
-    const defaultUserName = useSelector((state) => state.user.userName);
+    const defaultUserName = useSelector((state) => state.user.displayName || state.user.userName);
 
     const [sessionName, updateSessionName] = useState(defaultSessionName);
     const [userName, updateUserName] = useState(defaultUserName);
 
-    const handleSubmit = (event) => {
+    const handleJoin = (sessionType) => (event) => {
         event.preventDefault();
         if (sessionName && userName) {
             dispatch(setUserName(userName));
-            history.push('/' + trimName(sessionName));
+            const base = trimName(sessionName);
+            history.push(sessionType === 'tshirt' ? '/tshirt/' + base : '/' + base);
         }
     };
 
     return (
         <div className="py-5">
             <h1 className="mb-5 text-center text-white">Sign In</h1>
-            <form className="w-50 mx-auto text-light" onSubmit={handleSubmit}>
+            <form className="w-50 mx-auto text-light" onSubmit={(e) => e.preventDefault()}>
                 <div className="mb-3">
                     <label htmlFor="room" className="form-label">
                         Session Name
@@ -58,13 +59,32 @@ function SignIn() {
                         onChange={(event) => updateUserName(event.target.value)}
                     />
                 </div>
-                <div>
-                    <button type="submit" className="btn btn-primary px-4">
-                        Join Session
+                <div className="mb-3">
+                    <label className="form-label d-block">Session type</label>
+                    <button
+                        type="button"
+                        className="btn btn-primary me-2"
+                        onClick={handleJoin('points')}
+                        disabled={!sessionName || !userName}
+                    >
+                        Join Planning Poker
                     </button>
-                    <span className="me-2 ms-3">OR</span>
-                    <Link to={'/' + trimName(sessionName) + '?observer'} className="text-primary">
+                    <button
+                        type="button"
+                        className="btn btn-outline-primary"
+                        onClick={handleJoin('tshirt')}
+                        disabled={!sessionName || !userName}
+                    >
+                        Join T-shirt sizing
+                    </button>
+                </div>
+                <div>
+                    <span className="me-2">OR</span>
+                    <Link to={'/' + trimName(sessionName) + '?observer'} className="text-primary me-3">
                         Join As Observer
+                    </Link>
+                    <Link to={'/tshirt/' + trimName(sessionName) + '?observer'} className="text-primary">
+                        Observe T-shirt session
                     </Link>
                 </div>
             </form>

@@ -11,13 +11,16 @@ class FirebaseClient {
         reporter.log('new FirebaseClient()');
     }
 
-    initialize(sessionName, userName) {
+    initialize(sessionName, userName, sessionType = 'points') {
         console.info('DB connected');
         this.online();
-        this.sessionName = sessionName;
+        // Separate storage per route: poker and t-shirt sessions don't share players
+        this.sessionName = sessionType === 'tshirt' ? `tshirt_${sessionName}` : sessionName;
         this.userName = userName;
+        this.sessionType = sessionType;
         if (this.userName) {
-            this.setPoint(0);
+            const unvotedValue = sessionType === 'tshirt' ? '' : 0;
+            this.setPoint(unvotedValue);
             // track online status
             const connectedRef = this.db.ref('.info/connected');
             connectedRef.on('value', (snap) => {
@@ -42,7 +45,8 @@ class FirebaseClient {
             .catch(this.errorHandler);
     }
 
-    clearVotes() {
+    clearVotes(mode = 'points') {
+        const unvotedValue = mode === 'tshirt' ? '' : 0;
         this.db
             .ref(this.sessionName)
             .once('value')
@@ -55,7 +59,7 @@ class FirebaseClient {
                 };
                 for (const index in res.players) {
                     newSessionData.players[index] = {
-                        point: 0,
+                        point: unvotedValue,
                         cheated: false,
                         connected: !!res.players[index].connected,
                     };
@@ -79,6 +83,40 @@ class FirebaseClient {
                 .remove()
                 .catch(this.errorHandler);
         }
+    }
+
+    renameUser(newName) {
+        if (!this.sessionName || !this.userName || !newName || this.userName === newName) return;
+        const newNameTrimmed = (newName || '').trim().toLowerCase();
+        if (!newNameTrimmed || this.userName === newNameTrimmed) return;
+        const oldPath = this.sessionName + '/players/' + this.userName;
+        const newPath = this.sessionName + '/players/' + newNameTrimmed;
+        this.db
+            .ref(oldPath)
+            .once('value')
+            .then((snapshot) => {
+                const data = snapshot.val();
+                if (!data) {
+                    this.userName = newNameTrimmed;
+                    return;
+                }
+                return this.db
+                    .ref(newPath)
+                    .set({ ...data, connected: true })
+                    .then(() => this.db.ref(oldPath).remove())
+                    .then(() => {
+                        this.userName = newNameTrimmed;
+                        const connectedRef = this.db.ref('.info/connected');
+                        connectedRef.on('value', (snap) => {
+                            if (snap.val() === true) {
+                                const con = this.db.ref(this.sessionName + '/players/' + this.userName + '/connected');
+                                con.onDisconnect().remove();
+                                con.set(true);
+                            }
+                        });
+                    });
+            })
+            .catch(this.errorHandler);
     }
 
     attachListener(callbackFunc) {

@@ -2,10 +2,18 @@
     position: relative;
     z-index: 100;
     &__card {
+        width: 64px;
         height: 120px;
         padding: 0 2px;
+        box-sizing: border-box;
+        flex: 0 0 auto;
         cursor: pointer !important;
         img {
+            max-width: 60px;
+            max-height: 90px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
             top: 30px;
             transition: all ease 0.2s;
         }

@@ -4,14 +4,21 @@ import { createPortal } from 'react-dom';
 const mount = document.getElementById('modal');
 
 function Modal({ title, body, confirmText, confirmHandler, setVisibility }) {
-    const el = document.createElement('div');
+    const containerRef = useRef(null);
     const modalRef = useRef(null);
+    if (!containerRef.current) {
+        containerRef.current = document.createElement('div');
+    }
+    const el = containerRef.current;
+
     useEffect(() => {
         mount.appendChild(el);
         window.setTimeout(() => {
-            modalRef.current.className += ' show';
+            if (modalRef.current) modalRef.current.className += ' show';
         }, 100);
-        return () => mount.removeChild(el);
+        return () => {
+            mount.removeChild(el);
+        };
     }, [el]);
 
     return createPortal(
