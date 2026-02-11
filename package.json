@@ -2,6 +2,9 @@
     "name": "planning-poker",
     "version": "0.1.0",
     "private": true,
+    "engines": {
+        "node": ">=20.0.0"
+    },
     "dependencies": {
         "@reduxjs/toolkit": "^1.5.0",
         "@testing-library/jest-dom": "^5.11.4",
@@ -22,8 +25,8 @@
         "web-vitals": "^1.0.1"
     },
     "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
+        "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+        "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
         "test": "react-scripts test",
         "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
     },
@@ -49,7 +52,8 @@
         ]
     },
     "devDependencies": {
-        "node-sass": "^5.0.0",
-        "prettier": "^2.8.8"
+        "cross-env": "^7.0.3",
+        "prettier": "^2.8.8",
+        "sass": "^1.69.0"
     }
 }
