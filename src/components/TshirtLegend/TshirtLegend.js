@@ -8,12 +8,12 @@ const DEFAULT_LEGEND = {
     title: 'T-Shirt Sizing Legend',
     subtext: "time estimates based on one engineer's full time dedicated to the task",
     values: {
-        XS: '1 week',
-        S: '2 weeks',
-        M: '4 weeks',
-        L: '8 weeks',
-        XL: '16 weeks',
-        XXL: '32 weeks',
+        XS: '1 wk',
+        S: '2 wks',
+        M: '4 wks',
+        L: '8 wks',
+        XL: '16 wks',
+        XXL: '32 wks',
     },
 };
 
