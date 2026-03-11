@@ -11,6 +11,7 @@ import reporter from 'libraries/reporter';
 import Table from 'components/Table/Table';
 import Cards from 'components/Cards/Cards';
 import TshirtCards from 'components/Cards/TshirtCards';
+import TshirtLegend from 'components/TshirtLegend/TshirtLegend';
 import Setting from 'components/Setting/Setting';
 
 import './Room.scss';
@@ -26,6 +27,7 @@ function Room({ match, location, mode = 'points' }) {
     const sessionData = useSelector((state) => state.session.data) || {};
     const removedSelf = useSelector((state) => state.session.removedSelf);
     const playersFromStore = sessionData.players ?? {};
+    const tshirtLegend = sessionData.tshirtLegend;
     const userName = useSelector((state) => (observer ? '' : state.user.userName));
     // Add current user only when store is empty (e.g. just switched poker/tshirt), not when removed by someone else
     const storeEmpty = Object.keys(playersFromStore).length === 0;
@@ -113,6 +115,8 @@ function Room({ match, location, mode = 'points' }) {
                     </div>
                 </div>
             )}
+
+            {mode === 'tshirt' && <TshirtLegend legend={tshirtLegend} />}
 
             <Setting mode={mode} />
         </div>

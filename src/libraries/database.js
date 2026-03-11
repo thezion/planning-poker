@@ -85,6 +85,15 @@ class FirebaseClient {
         }
     }
 
+    setTshirtLegend(legend) {
+        if (this.sessionType === 'tshirt') {
+            this.db
+                .ref(this.sessionName + '/tshirtLegend')
+                .set(legend)
+                .catch(this.errorHandler);
+        }
+    }
+
     renameUser(newName) {
         if (!this.sessionName || !this.userName || !newName || this.userName === newName) return;
         const newNameTrimmed = (newName || '').trim().toLowerCase();
