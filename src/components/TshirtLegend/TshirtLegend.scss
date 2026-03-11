@@ -9,9 +9,10 @@
 
     &__header {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
         margin-bottom: 12px;
+        position: relative;
     }
 
     &__title {
@@ -19,12 +20,15 @@
         font-size: 1.1rem;
         font-weight: 600;
         color: #fff;
+        text-align: center;
     }
 
     &__edit-btn {
         padding: 4px 8px;
         border-color: rgba(255, 255, 255, 0.3);
         color: rgba(255, 255, 255, 0.8);
+        position: absolute;
+        right: 0;
 
         &:hover {
             background: rgba(255, 255, 255, 0.1);
