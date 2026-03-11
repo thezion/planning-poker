@@ -8,12 +8,12 @@ const DEFAULT_LEGEND = {
     title: 'T-Shirt Sizing Legend',
     subtext: "time estimates based on one engineer's full time dedicated to the task",
     values: {
-        XS: '0.5 weeks',
-        S: '1 week',
-        M: '2 weeks',
-        L: '4 weeks',
-        XL: '8 weeks',
-        XXL: '16 weeks',
+        XS: '1 week',
+        S: '2 weeks',
+        M: '4 weeks',
+        L: '8 weeks',
+        XL: '16 weeks',
+        XXL: '32 weeks',
     },
 };
 
@@ -169,14 +169,26 @@ function TshirtLegend({ legend }) {
                     </button>
                 </div>
                 <div className="__tshirt-legend__values">
-                    {Object.entries(currentLegend.values).map(([size, value]) => (
-                        <div key={size} className="__tshirt-legend__item">
-                            <span className={`__tshirt-legend__badge __tshirt-legend__badge--${size.toLowerCase()}`}>
-                                {size}
-                            </span>
-                            <span className="__tshirt-legend__value">{value}</span>
-                        </div>
-                    ))}
+                    <div className="__tshirt-legend__column">
+                        {['XS', 'S', 'M'].map((size) => (
+                            <div key={size} className="__tshirt-legend__item">
+                                <span className={`__tshirt-legend__badge __tshirt-legend__badge--${size.toLowerCase()}`}>
+                                    {size}
+                                </span>
+                                <span className="__tshirt-legend__value">{currentLegend.values[size]}</span>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="__tshirt-legend__column">
+                        {['L', 'XL', 'XXL'].map((size) => (
+                            <div key={size} className="__tshirt-legend__item">
+                                <span className={`__tshirt-legend__badge __tshirt-legend__badge--${size.toLowerCase()}`}>
+                                    {size}
+                                </span>
+                                <span className="__tshirt-legend__value">{currentLegend.values[size]}</span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 {currentLegend.subtext && (
                     <p className="__tshirt-legend__subtext">{currentLegend.subtext}</p>

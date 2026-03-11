@@ -35,9 +35,15 @@
 
     &__values {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 8px;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
         margin-bottom: 12px;
+    }
+
+    &__column {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
     }
 
     &__item {
@@ -117,11 +123,27 @@
         margin: 16px auto;
 
         &__values {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
         }
 
         &__title {
             font-size: 1rem;
+        }
+
+        &__item {
+            padding: 4px;
+            font-size: 0.85rem;
+        }
+
+        &__badge {
+            min-width: 32px;
+            padding: 3px 6px;
+            font-size: 0.7rem;
+        }
+
+        &__value {
+            font-size: 0.8rem;
         }
 
         .modal-dialog {
