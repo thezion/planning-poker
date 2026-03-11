@@ -10,7 +10,6 @@ A real-time, collaborative planning poker application for agile teams to estimat
 - **Celebration Animations** - Confetti and holiday-themed animations when consensus is reached
 - **Room-based Sessions** - Create private rooms with unique codes for your team
 - **Player Management** - Add/remove players, track online status, and manage spectators
-- **Responsive Design** - Works seamlessly on desktop and mobile devices
 - **Offline Detection** - Gracefully handles connection issues and displays offline status
 
 ## Play Online
@@ -63,7 +62,7 @@ The app will open at `http://localhost:3000`.
 ### Available Scripts
 
 - `npm start` - Run the development server
-- `npm build` - Build for production
+- `npm run build` - Build for production
 - `npm test` - Run tests in watch mode
 - `npm run format` - Format code using Prettier
 
@@ -134,7 +133,7 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for de
 
 ## License
 
-This project is available as open source. See the LICENSE file for more details.
+This project is licensed under the GNU General Public License v3.0. See the LICENSE file for more details.
 
 ## Support
 
