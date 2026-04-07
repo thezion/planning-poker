@@ -68,6 +68,12 @@ function Room({ match, location, mode = 'points' }) {
         }
     }, [dispatch, history, sessionName, userName, observer, mode]);
 
+    useEffect(() => {
+        if (removedSelf) {
+            db.markAsRemoved();
+        }
+    }, [removedSelf]);
+
     return (
         <div className="__room" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/img/poker-desk.jpg)` }}>
             <div className="d-flex align-items-center justify-content-center __room__session">

@@ -3,6 +3,7 @@ import { Link, useLocation, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { setUserName } from 'store/user';
+import { setRemovedSelf } from 'store/session';
 import { ucfirst, trimName } from 'libraries/stringHelper';
 import db from 'libraries/database';
 import Modal from 'components/Utilities/Modal';
@@ -20,6 +21,7 @@ function Header() {
     const dispatch = useDispatch();
     const userName = useSelector((state) => state.user.userName);
     const displayName = useSelector((state) => state.user.displayName);
+    const removedSelf = useSelector((state) => state.session.removedSelf);
     const location = useLocation();
     const history = useHistory();
     const pathname = location.pathname || '';
@@ -27,6 +29,7 @@ function Header() {
     const inRoom = sessionName && pathname !== '/';
     const onPoker = inRoom && (pathname.startsWith('/poker/') || (!pathname.startsWith('/tshirt/') && !pathname.startsWith('/poker/')));
     const onTshirt = inRoom && pathname.startsWith('/tshirt/');
+    const observer = location.search.indexOf('?observer') === 0;
 
     const [showNameModal, setShowNameModal] = useState(false);
     const [nameInput, setNameInput] = useState('');
@@ -51,6 +54,11 @@ function Header() {
         if (!trimmed) return;
         dispatch(setUserName(trimmed));
         if (inRoom) db.renameUser(trimName(trimmed));
+    };
+
+    const handleRejoin = () => {
+        dispatch(setRemovedSelf(false));
+        db.rejoinSession();
     };
 
     return (
@@ -83,6 +91,16 @@ function Header() {
                     </div>
                 )}
                 <div className="navbar-text ms-auto">
+                    {inRoom && !observer && removedSelf && (
+                        <button
+                            type="button"
+                            className="btn btn-primary btn-sm me-3"
+                            onClick={handleRejoin}
+                            title="Rejoin the voting session"
+                        >
+                            Rejoin Session
+                        </button>
+                    )}
                     <img className="__header__profile" alt="profile" src="img/profile.svg" />
                     <button
                         type="button"
