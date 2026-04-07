@@ -8,6 +8,7 @@ class FirebaseClient {
         this.db = firebase.database();
         this.sessionName = '';
         this.userName = '';
+        this.isRemovedFromSession = false;
         reporter.log('new FirebaseClient()');
     }
 
@@ -24,7 +25,7 @@ class FirebaseClient {
             // track online status
             const connectedRef = this.db.ref('.info/connected');
             connectedRef.on('value', (snap) => {
-                if (snap.val() === true) {
+                if (snap.val() === true && !this.isRemovedFromSession) {
                     const con = this.db.ref(this.sessionName + '/players/' + this.userName + '/connected');
                     con.onDisconnect().remove();
                     con.set(true);
@@ -94,6 +95,33 @@ class FirebaseClient {
         }
     }
 
+    markAsRemoved() {
+        this.isRemovedFromSession = true;
+        // Turn off connection listener to prevent auto-rejoin
+        this.db.ref('.info/connected').off();
+    }
+
+    rejoinSession() {
+        if (!this.userName || !this.sessionName) return;
+
+        // Reset removed flag
+        this.isRemovedFromSession = false;
+
+        // Re-add user with unvoted value
+        const unvotedValue = this.sessionType === 'tshirt' ? '' : 0;
+        this.setPoint(unvotedValue);
+
+        // Re-establish connection tracking
+        const connectedRef = this.db.ref('.info/connected');
+        connectedRef.on('value', (snap) => {
+            if (snap.val() === true && !this.isRemovedFromSession) {
+                const con = this.db.ref(this.sessionName + '/players/' + this.userName + '/connected');
+                con.onDisconnect().remove();
+                con.set(true);
+            }
+        });
+    }
+
     renameUser(newName) {
         if (!this.sessionName || !this.userName || !newName || this.userName === newName) return;
         const newNameTrimmed = (newName || '').trim().toLowerCase();
@@ -117,7 +145,7 @@ class FirebaseClient {
                         this.userName = newNameTrimmed;
                         const connectedRef = this.db.ref('.info/connected');
                         connectedRef.on('value', (snap) => {
-                            if (snap.val() === true) {
+                            if (snap.val() === true && !this.isRemovedFromSession) {
                                 const con = this.db.ref(this.sessionName + '/players/' + this.userName + '/connected');
                                 con.onDisconnect().remove();
                                 con.set(true);
